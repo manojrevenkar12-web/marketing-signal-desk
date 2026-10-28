@@ -50,7 +50,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: docker build -t signal-desk:ci .
+      - name: Build the image
+        run: |
+          set -o pipefail
+          if ! docker build --progress=plain -t signal-desk:ci . 2>&1 | tee build.log; then
+            echo "::error title=docker build::$(tail -n 40 build.log | sed -e 's/%/%25/g' | awk '{printf "%s%%0A", $0}')"
+            exit 1
+          fi
+      - name: The installed package loads its settings, templates and hashed static files
+        run: >-
+          docker run --rm -e MSD_SECRET_KEY=ci-only-not-a-secret-0123456789abcdefghijklmnopqrstuvwxyz
+          -e MSD_ALLOWED_HOSTS=127.0.0.1 -e DATABASE_URL=postgresql://none:none@127.0.0.1:1/none
+          -e DJANGO_SETTINGS_MODULE=msd.settings signal-desk:ci
+          python -c "import django; django.setup(); from django.template.loader import get_template; from django.contrib.staticfiles.storage import staticfiles_storage as s; get_template('web/overview.html'); print(s.url('web/app.css'))"
 
   terraform:
     runs-on: ubuntu-latest

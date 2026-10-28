@@ -9,7 +9,7 @@ COPY src/msd/web/*.py /build/src/msd/web/
 RUN npm run build
 
 FROM python:3.13-slim AS app
-ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 MSD_ENV=prod MSD_ROOT=/app
+ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 MSD_ENV=prod MSD_ROOT=/app MSD_STATIC_ROOT=/app/staticfiles
 RUN useradd --create-home --uid 10001 desk
 WORKDIR /app
 COPY pyproject.toml README.md ./
