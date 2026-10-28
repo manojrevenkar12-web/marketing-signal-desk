@@ -1,0 +1,13 @@
+id: brand-landing-conversion-drop
+title: Brand search landing page breaks, its conversion rate falls 40%
+seed: 4105
+question: "Why did our CPA go up last week?"
+events:
+  - {type: cvr_drop, channel: google_ads, campaign: "Search - Brand", start: 2026-09-21, pct: 40}
+expect:
+  metric: cpa
+  causes: [{type: conversion_drop, channel: google_ads, campaign: "Search - Brand"}]
+  signals: []
+note: >
+  Brand search is the cheapest and largest source of purchases (about 80 a day). Losing 40% of them
+  is about 32 purchases, total CPA up about 14%. Clicks and CTR are normal; only CVR falls.

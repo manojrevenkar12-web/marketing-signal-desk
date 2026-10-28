@@ -1,0 +1,7 @@
+id: steady-state
+title: Nothing changed
+seed: 3
+expect:
+  causes: []
+  signals: []
+note: Noise only. The desk should say there is no material change.

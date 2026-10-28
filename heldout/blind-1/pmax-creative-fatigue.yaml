@@ -1,0 +1,13 @@
+id: pmax-creative-fatigue
+title: PMax Shopping click-through halves after stale assets and feed images
+seed: 4104
+question: "Why did our CPA go up last week?"
+events:
+  - {type: ctr_drop, channel: google_ads, campaign: "PMax - Shopping", start: 2026-09-21, pct: 50}
+expect:
+  metric: cpa
+  causes: [{type: creative_fatigue, channel: google_ads, campaign: "PMax - Shopping"}]
+  signals: []
+note: >
+  PMax loses about 22 of its 45 purchases a day, total CPA up about 9%. Only one Google campaign
+  moves; Brand and Generic search stay normal.

@@ -1,0 +1,21 @@
+# Model routing for the assistant. The first provider whose key is set is used; the others are
+# fallbacks (LangChain with_fallbacks). Without any key the deterministic simulated writer runs,
+# which is what CI and the evals use. LangSmith tracing turns on with LANGSMITH_TRACING=true.
+providers:
+  - name: anthropic
+    model: claude-sonnet-4-5
+    key_env: ANTHROPIC_API_KEY
+  - name: openai
+    model: gpt-5-mini
+    key_env: OPENAI_API_KEY
+  - name: openrouter
+    model: anthropic/claude-sonnet-4.5
+    key_env: OPENROUTER_API_KEY
+    base_url: https://openrouter.ai/api/v1
+temperature: 0
+max_tokens: 700
+timeout_s: 45
+max_retries: 2
+grounding_retries: 1
+sim:
+  derived_number_rate: 0.3     # the simulated writer adds a number it worked out itself this often

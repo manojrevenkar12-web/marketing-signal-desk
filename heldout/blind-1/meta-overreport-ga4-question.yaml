@@ -1,0 +1,13 @@
+id: meta-overreport-ga4-question
+title: Meta attribution setting change inflates Meta-claimed purchases by 40%
+seed: 4112
+question: "Why did our CPA change last week?"
+events:
+  - {type: overreport, channel: meta, start: 2026-09-21, pct: 40}
+expect:
+  metric: cpa
+  causes: []
+  signals: [{type: overreporting, channel: meta}]
+note: >
+  GA4 and reality are unchanged, so GA4 CPA does not move. The gap between Meta's claim and GA4
+  widens and must still be flagged as a signal.

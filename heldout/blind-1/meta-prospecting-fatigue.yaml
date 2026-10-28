@@ -1,0 +1,13 @@
+id: meta-prospecting-fatigue
+title: Advantage+ prospecting creatives wear out, CTR down 60%
+seed: 4103
+question: "Why did our CPA go up last week?"
+events:
+  - {type: ctr_drop, channel: meta, campaign: "Prospecting - Advantage+", start: 2026-09-21, pct: 60}
+expect:
+  metric: cpa
+  causes: [{type: creative_fatigue, channel: meta, campaign: "Prospecting - Advantage+"}]
+  signals: []
+note: >
+  One campaign only: prospecting loses about 20 of its 34 purchases a day, total CPA up about 8-9%.
+  Retargeting is untouched, so the cause should name the campaign.

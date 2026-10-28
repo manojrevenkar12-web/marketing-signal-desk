@@ -1,0 +1,16 @@
+id: roas-promotion-plus-meta-cpm
+title: A 15% promotion and a 60% Meta CPM rise both cut ROAS
+seed: 4119
+question: "Why did our ROAS drop last week?"
+events:
+  - {type: aov_drop, start: 2026-09-21, pct: 15}
+  - {type: cpm_spike, channel: meta, start: 2026-09-21, pct: 60}
+expect:
+  metric: roas
+  causes:
+    - {type: order_value_drop}
+    - {type: auction_pressure, channel: meta}
+  signals: []
+note: >
+  Order value alone takes about 15% off ROAS; the Meta CPM rise loses about 8% of purchases, so about
+  8% off ROAS. Both material, order value first.

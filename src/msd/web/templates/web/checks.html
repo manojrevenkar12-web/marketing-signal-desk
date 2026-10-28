@@ -1,0 +1,24 @@
+{% extends "web/layout.html" %}
+{% load msd_ui %}
+{% block title %}Data checks, {{ ws.name }}{% endblock %}
+{% block main %}
+<h1 class="text-2xl font-semibold tracking-tight">Data checks</h1>
+<p class="mt-1 max-w-prose text-ink-soft">Before any number is explained, the desk checks it: GA4 against each platform, clicks that do not behave like people, days a source did not deliver.</p>
+{% if not diag %}
+<div class="mt-6">{% include "web/components/states.html#empty" with title="No analysis yet" body="Open the overview once data has synced; the checks run with it." %}</div>
+{% elif signals %}
+<ul class="mt-6 space-y-3">
+  {% for s in signals %}
+  <li class="panel border-l-4 {% if s.severity == 'critical' %}border-worse{% else %}border-measure{% endif %}">
+    <p class="text-sm font-semibold text-measure">{{ s.kind|kind_label }}{% if s.channel %}, {{ s.channel }}{% endif %}{% if s.since %}, since {{ s.since }}{% endif %}</p>
+    <p class="mt-1">{{ s.summary }}</p>
+    <dl class="mt-3 grid grid-cols-2 gap-x-6 gap-y-1 text-sm sm:grid-cols-4">
+      {% for k, v in s.evidence.items %}<div><dt class="text-xs text-muted">{{ k|cut:"_"|capfirst }}</dt><dd class="font-semibold">{{ v }}</dd></div>{% endfor %}
+    </dl>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<div class="mt-6">{% include "web/components/states.html#empty" with title="Every check passed" body="GA4 agrees with each platform as usual, no campaign shows invalid clicks, and every source delivered every day." %}</div>
+{% endif %}
+{% endblock %}

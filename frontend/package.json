@@ -1,0 +1,16 @@
+{
+  "name": "marketing-signal-desk-frontend",
+  "private": true,
+  "description": "Builds the Tailwind CSS and copies HTMX, Alpine (CSP build) and the font into the Django app's static files.",
+  "scripts": {
+    "build": "tailwindcss -i src/app.css -o ../src/msd/web/static/web/app.css --minify && node copy-vendor.mjs",
+    "watch": "tailwindcss -i src/app.css -o ../src/msd/web/static/web/app.css --watch"
+  },
+  "devDependencies": {
+    "@alpinejs/csp": "3.17.5",
+    "@fontsource-variable/figtree": "5.3.0",
+    "@tailwindcss/cli": "4.3.3",
+    "htmx.org": "2.0.11",
+    "tailwindcss": "4.3.3"
+  }
+}

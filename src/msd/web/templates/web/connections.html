@@ -1,0 +1,26 @@
+{% extends "web/layout.html" %}
+{% block title %}Connections, {{ ws.name }}{% endblock %}
+{% block main %}
+<h1 class="text-2xl font-semibold tracking-tight">Connections</h1>
+<p class="mt-1 max-w-prose text-ink-soft">Each source is read through its reporting API. A sync replaces its whole window, so platforms' late corrections are picked up; rate limits and server errors are retried.</p>
+{% if rows %}
+<div class="panel mt-6 overflow-x-auto p-0">
+  <table class="w-full min-w-[40rem] text-sm">
+    <thead class="text-left text-muted"><tr><th class="px-5 py-3 font-medium">Source</th><th class="px-5 py-3 font-medium">Account</th><th class="px-5 py-3 font-medium">Last sync</th><th class="px-5 py-3 text-right font-medium">Rows</th><th class="px-5 py-3"><span class="sr-only">Action</span></th></tr></thead>
+    <tbody class="divide-y divide-line">{% for row in rows %}{% include "web/connections.html#row" %}{% endfor %}</tbody>
+  </table>
+</div>
+{% else %}
+<div class="mt-6">{% include "web/components/states.html#empty" with title="No sources connected" body="An admin adds the workspace's Google Ads, Meta, Microsoft Ads, TikTok and GA4 accounts." %}</div>
+{% endif %}
+{% endblock %}
+
+{% partialdef row %}
+<tr id="conn-{{ row.a.pk }}">
+  <td class="px-5 py-3 font-medium">{{ row.a.get_kind_display }}{% if row.a.mode == 'sim' %} <span class="text-xs text-muted">simulated</span>{% endif %}</td>
+  <td class="px-5 py-3 text-ink-soft">{{ row.a.account_id }}</td>
+  <td class="px-5 py-3">{% if row.run %}<span class="{% if row.run.status == 'ok' %}text-better{% else %}text-worse{% endif %} font-semibold">{{ row.run.get_status_display }}</span> <span class="text-muted">{{ row.run.started_at|date:"j M H:i" }}{% if row.run.retries %}, {{ row.run.retries }} retries{% endif %}</span>{% if row.run.error %}<span class="block text-xs text-worse">{{ row.run.error|truncatechars:140 }}</span>{% endif %}{% else %}<span class="text-muted">Never synced</span>{% endif %}</td>
+  <td class="px-5 py-3 text-right">{{ row.run.rows|default:"0" }}</td>
+  <td class="px-5 py-3 text-right">{% if member.role != 'client' %}<button class="btn" hx-post="{% url 'sync_now' ws.slug row.a.pk %}" hx-target="#conn-{{ row.a.pk }}" hx-swap="outerHTML" hx-disabled-elt="this"><span class="hide-while-loading">Sync now</span><span class="htmx-indicator">Syncing</span></button>{% endif %}</td>
+</tr>
+{% endpartialdef %}

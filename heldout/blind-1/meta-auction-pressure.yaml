@@ -1,0 +1,13 @@
+id: meta-auction-pressure
+title: Meta CPMs up 60% as competitors push autumn campaigns
+seed: 4102
+question: "Why did our CPA go up last week?"
+events:
+  - {type: cpm_spike, channel: meta, start: 2026-09-21, pct: 60}
+expect:
+  metric: cpa
+  causes: [{type: auction_pressure, channel: meta}]
+  signals: []
+note: >
+  Meta has about 58 GA4 purchases a day; a 60% CPM rise on fixed budget loses about 22 of them,
+  total CPA up about 9%. Sized well above the 5% line on purpose.

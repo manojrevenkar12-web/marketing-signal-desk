@@ -1,0 +1,14 @@
+id: site-cvr-plus-meta-overreport
+title: Site-wide conversion drop while Meta starts over-claiming
+seed: 4116
+question: "Why did our CPA go up last week?"
+events:
+  - {type: cvr_drop, start: 2026-09-21, pct: 20}
+  - {type: overreport, channel: meta, start: 2026-09-21, pct: 30}
+expect:
+  metric: cpa
+  causes: [{type: site_conversion_drop}]
+  signals: [{type: overreporting, channel: meta}]
+note: >
+  Real purchases fall 20% everywhere (CPA up about 25%). Meta's own numbers fall less than the
+  others because of the over-claim, which should be a signal, not hide the site problem.

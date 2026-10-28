@@ -1,0 +1,63 @@
+[project]
+name = "marketing-signal-desk"
+version = "0.1.0"
+description = "Why a marketing KPI moved, across Google Ads, Meta, Microsoft Ads, TikTok and GA4: data checked first, causes decided by rules, explained by an LLM, budget changes approved by people. Django 6.1, HTMX, Alpine.js, Tailwind CSS."
+requires-python = ">=3.12"
+license = { text = "Apache-2.0" }
+dependencies = [
+  "django>=6.1,<6.2",
+  "django-tasks-db>=0.13",
+  "psycopg[binary]>=3.2",
+  "pydantic>=2.12",
+  "pyyaml>=6.0",
+  "numpy>=2.3",
+  "httpx>=0.28",
+  "langchain-core>=1.7",
+  "langchain-openai>=1.7",
+  "langchain-anthropic>=1.7",
+  "langsmith>=0.14",
+  "whitenoise>=6.9",
+  "gunicorn>=23",
+  "uvicorn>=0.38",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=9.0", "pytest-django>=4.11", "pytest-playwright>=0.7", "playwright==1.56.0", "ruff>=0.14", "mypy>=1.19", "django-stubs>=6.1", "types-PyYAML"]
+
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"*" = ["templates/**/*", "static/**/*", "migrations/*.py"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "msd.settings"
+pythonpath = ["src"]
+testpaths = ["tests"]
+markers = ["e2e: browser tests against a live server (Playwright)", "slow: full evaluation runs"]
+addopts = "-p no:cacheprovider"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+line-length = 200
+target-version = "py312"
+extend-exclude = ["src/msd/*/migrations"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF", "DJ"]
+ignore = ["RUF001", "RUF002", "RUF003", "E501", "RUF012", "SIM105", "B023", "E731"]
+
+[tool.mypy]
+python_version = "3.13"
+mypy_path = "src"
+packages = ["msd"]
+plugins = ["mypy_django_plugin.main"]
+ignore_missing_imports = true
+exclude = ["migrations/"]
+
+[tool.django-stubs]
+django_settings_module = "msd.settings"

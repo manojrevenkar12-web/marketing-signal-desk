@@ -1,0 +1,8 @@
+id: consent-banner
+title: A new consent banner cut GA4's coverage on every channel
+seed: 22
+events:
+  - {type: tracking_loss, start: 2026-09-21, pct: 35}
+expect:
+  causes: [{type: tracking_loss}]
+  signals: [{kind: tracking_gap}]

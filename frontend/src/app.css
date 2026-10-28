@@ -1,0 +1,141 @@
+/* Signal Desk design tokens. Every colour, size and duration the templates use is defined here
+   and reached through Tailwind utilities generated from @theme, never as a raw value in markup. */
+@import "tailwindcss";
+@source "../../src/msd/web/templates";
+@source "../../src/msd/web/*.py";
+
+@font-face {
+  font-family: "Figtree";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300 900;
+  src: url("vendor/fonts/figtree-latin-wght-normal.woff2") format("woff2-variations");
+}
+
+@theme {
+  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
+
+  /* surfaces: a cool, slightly violet grey, not paper and not black */
+  --color-canvas: #f1f2f6;
+  --color-panel: #ffffff;
+  --color-sunk: #e7e8ef;
+  --color-line: #d6d8e2;
+  --color-ink: #1b1d2a;
+  --color-ink-soft: #3d4154;
+  --color-muted: #646a80;
+
+  /* meaning: what a number does to the KPI, and what the data is doing */
+  --color-worse: #b4452b;        /* pushes the KPI the wrong way */
+  --color-worse-wash: #f8e7e1;
+  --color-better: #1f7a6e;       /* pushes it the right way */
+  --color-better-wash: #dff1ed;
+  --color-measure: #8a5a00;      /* a data or tracking problem, not performance */
+  --color-measure-wash: #f8eed9;
+  --color-act: #3c4ba8;          /* things you can do */
+  --color-act-wash: #e6e8f8;
+  --color-focus: #3c4ba8;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+
+  --radius-ctl: 0.375rem;
+  --radius-panel: 0.75rem;
+  --shadow-panel: 0 1px 0 rgb(27 29 42 / 0.05), 0 10px 30px -18px rgb(27 29 42 / 0.25);
+
+  --spacing: 0.25rem;
+  --container-prose: 68ch;
+
+  --ease-out-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --animate-grow: grow 520ms var(--ease-out-soft) both;
+  --animate-rise: rise 360ms var(--ease-out-soft) both;
+  --animate-shimmer: shimmer 1.4s linear infinite;
+
+  @keyframes grow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes shimmer {
+    to { background-position: -200% 0; }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-canvas: #12131b;
+    --color-panel: #1b1d29;
+    --color-sunk: #161823;
+    --color-line: #2c2f40;
+    --color-ink: #e9eaf2;
+    --color-ink-soft: #c5c8d6;
+    --color-muted: #9599ad;
+    --color-worse: #f08a6f;
+    --color-worse-wash: #3a2019;
+    --color-better: #5fcfbd;
+    --color-better-wash: #14302b;
+    --color-measure: #e8b85a;
+    --color-measure-wash: #352a12;
+    --color-act: #9aa6ff;
+    --color-act-wash: #23284a;
+    --color-focus: #9aa6ff;
+  }
+}
+:root[data-theme="dark"] {
+  --color-canvas: #12131b;
+  --color-panel: #1b1d29;
+  --color-sunk: #161823;
+  --color-line: #2c2f40;
+  --color-ink: #e9eaf2;
+  --color-ink-soft: #c5c8d6;
+  --color-muted: #9599ad;
+  --color-worse: #f08a6f;
+  --color-worse-wash: #3a2019;
+  --color-better: #5fcfbd;
+  --color-better-wash: #14302b;
+  --color-measure: #e8b85a;
+  --color-measure-wash: #352a12;
+  --color-act: #9aa6ff;
+  --color-act-wash: #23284a;
+  --color-focus: #9aa6ff;
+}
+
+@layer base {
+  html { font-feature-settings: "tnum" 1, "cv11" 1; -webkit-font-smoothing: antialiased; }
+  body { @apply bg-canvas text-ink font-sans; }
+  :focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+}
+
+@layer components {
+  .panel { @apply bg-panel rounded-panel shadow-panel p-6 min-w-0; }
+  .btn { @apply inline-flex items-center gap-2 rounded-ctl border border-line bg-panel px-3 py-1.5 text-sm text-ink transition-colors duration-150 hover:border-ink-soft disabled:opacity-50 disabled:cursor-not-allowed; }
+  .btn-primary { @apply border-act bg-act text-panel hover:opacity-90; }
+  .field { @apply w-full rounded-ctl border border-line bg-panel px-3 py-2 text-base text-ink placeholder:text-muted; }
+  .skeleton-line { @apply block h-3.5 rounded-ctl; background: linear-gradient(90deg, var(--color-sunk), var(--color-line), var(--color-sunk)); background-size: 200% 100%; animation: var(--animate-shimmer); }
+  .num-traced { @apply rounded-sm px-0.5 font-semibold; box-shadow: inset 0 -2px 0 var(--color-act); }
+  .num-untraced { @apply rounded-sm px-0.5 font-semibold text-worse; box-shadow: inset 0 -2px 0 var(--color-worse); }
+  .bridge-bar { transform-box: fill-box; transform-origin: left center; animation: var(--animate-grow); }
+  .bridge-bar-neg { transform-origin: right center; }
+  .reveal { animation: var(--animate-rise); }
+  .htmx-indicator { display: none; }
+  .htmx-request .htmx-indicator, .htmx-request.htmx-indicator { display: block; }
+  .htmx-request .hide-while-loading { display: none; }
+}
+
+/* the delay steps used by the bridge's bars, so the reveal reads left to right */
+@layer utilities {
+  .delay-step-0 { animation-delay: 0ms; } .delay-step-1 { animation-delay: 60ms; } .delay-step-2 { animation-delay: 120ms; }
+  .delay-step-3 { animation-delay: 180ms; } .delay-step-4 { animation-delay: 240ms; } .delay-step-5 { animation-delay: 300ms; }
+  .delay-step-6 { animation-delay: 360ms; } .delay-step-7 { animation-delay: 420ms; } .delay-step-8 { animation-delay: 480ms; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}

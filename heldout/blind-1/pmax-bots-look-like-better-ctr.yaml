@@ -1,0 +1,14 @@
+id: pmax-bots-look-like-better-ctr
+title: Bot clicks on PMax make its CTR look better while CPA worsens
+seed: 4122
+question: "Why did our CPA go up last week?"
+events:
+  - {type: invalid_clicks, channel: google_ads, campaign: "PMax - Shopping", start: 2026-09-21, clicks_per_day: 1500}
+expect:
+  metric: cpa
+  causes: [{type: invalid_traffic, channel: google_ads, campaign: "PMax - Shopping"}]
+  signals: [{type: invalid_traffic, channel: google_ads}]
+note: >
+  PMax clicks nearly double with no extra purchases. CTR looks like a creative win, but cost per
+  purchase rises: total CPA up roughly 8% (bots eating budget) to 18% (bots added on top). Not
+  creative improvement and not a conversion drop.

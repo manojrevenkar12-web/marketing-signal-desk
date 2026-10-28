@@ -1,0 +1,13 @@
+id: checkout-site-conversion-drop
+title: A checkout release makes every channel convert 25% worse from Wednesday
+seed: 4106
+question: "Why did our CPA go up last week?"
+events:
+  - {type: cvr_drop, start: 2026-09-23, pct: 25}
+expect:
+  metric: cpa
+  causes: [{type: site_conversion_drop}]
+  signals: []
+note: >
+  No channel: all four channels lose real purchases at once for five of seven days, total CPA up
+  about 20%. Should be named as a site problem, not four separate channel problems.

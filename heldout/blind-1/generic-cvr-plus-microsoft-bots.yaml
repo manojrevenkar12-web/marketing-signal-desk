@@ -1,0 +1,14 @@
+id: generic-cvr-plus-microsoft-bots
+title: Generic search conversion halves; a little bot traffic on Microsoft
+seed: 4118
+question: "Why did our CPA go up last week?"
+events:
+  - {type: cvr_drop, channel: google_ads, campaign: "Search - Generic", start: 2026-09-21, pct: 50}
+  - {type: invalid_clicks, channel: microsoft_ads, campaign: "Search - Generic", start: 2026-09-22, clicks_per_day: 250}
+expect:
+  metric: cpa
+  causes: [{type: conversion_drop, channel: google_ads, campaign: "Search - Generic"}]
+  signals: [{type: invalid_traffic, channel: microsoft_ads}]
+note: >
+  Google generic loses about 26 purchases a day, total CPA up about 11%. The Microsoft bots cost
+  about 2% of CPA at most: a signal, not a cause.

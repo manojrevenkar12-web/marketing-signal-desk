@@ -1,0 +1,23 @@
+{% extends "web/layout.html" %}
+{% block title %}Audit trail, {{ ws.name }}{% endblock %}
+{% block main %}
+<div class="flex flex-wrap items-end justify-between gap-3">
+  <div>
+    <h1 class="text-2xl font-semibold tracking-tight">Audit trail</h1>
+    <p class="mt-1 max-w-prose text-ink-soft">Append-only: the database refuses changes and deletions, and each entry carries the hash of the one before it.</p>
+  </div>
+  <p class="rounded-full px-3 py-1 text-sm font-semibold {% if chain_ok %}bg-better-wash text-better{% else %}bg-worse-wash text-worse{% endif %}">{% if chain_ok %}Chain verified, {{ chain_n }} entries{% else %}Chain broken after entry {{ chain_n }}{% endif %}</p>
+</div>
+{% if events %}
+<ol class="mt-6 space-y-2">
+  {% for e in events %}
+  <li class="panel py-3">
+    <p class="text-sm"><span class="font-semibold">{{ e.action }}</span> <span class="text-ink-soft">{{ e.subject }}</span></p>
+    <p class="text-xs text-muted">{{ e.at|date:"j M Y H:i:s" }}, {{ e.actor.username|default:"system" }}, hash {{ e.hash|truncatechars:13 }}</p>
+  </li>
+  {% endfor %}
+</ol>
+{% else %}
+<div class="mt-6">{% include "web/components/states.html#empty" with title="Nothing recorded yet" body="Proposals and decisions appear here as they happen." %}</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,10 @@
+id: promo-week
+title: A 25% promotion shrank baskets
+seed: 29
+question: "Why did ROAS drop last week?"
+events:
+  - {type: aov_drop, start: 2026-09-21, pct: 25}
+expect:
+  metric: roas
+  causes: [{type: order_value_drop}]
+  signals: []

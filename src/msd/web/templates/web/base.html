@@ -1,0 +1,21 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="htmx-config" content='{"allowEval": false, "includeIndicatorStyles": false, "globalViewTransitions": true, "selfRequestsOnly": true}'>
+  <title>{% block title %}Signal Desk{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'web/app.css' %}">
+  <script nonce="{{ csp_nonce }}" src="{% static 'web/app.js' %}" defer></script>
+  <script nonce="{{ csp_nonce }}" src="{% static 'web/vendor/htmx.min.js' %}" defer></script>
+  <script nonce="{{ csp_nonce }}" src="{% static 'web/vendor/alpine-csp.min.js' %}" defer></script>
+</head>
+<body class="min-h-screen" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-10 focus:bg-panel focus:p-2">Skip to content</a>
+  {% block shell %}{% endblock %}
+  <div id="problem" hidden role="alert" class="fixed bottom-4 left-1/2 z-20 w-[min(36rem,calc(100%-2rem))] -translate-x-1/2 rounded-panel border border-worse bg-panel p-4 shadow-panel">
+    <p class="text-sm" data-text></p>
+    <div class="mt-3 flex gap-2"><button type="button" class="btn" data-dismiss-problem>Dismiss</button><button type="button" class="btn" data-reload>Reload</button></div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+id: generic-cpm-plus-tiktok-missing-days
+title: Google generic search CPM up 50% while TikTok data is missing for two days
+seed: 4115
+question: "Why did our CPA go up last week?"
+events:
+  - {type: cpm_spike, channel: google_ads, campaign: "Search - Generic", start: 2026-09-21, pct: 50}
+  - {type: missing_days, channel: tiktok, dates: [2026-09-25, 2026-09-26]}
+expect:
+  metric: cpa
+  causes: [{type: auction_pressure, channel: google_ads}]
+  signals: [{type: missing_days, channel: tiktok}]
+note: >
+  Generic search loses a third of its 51.5 purchases (about 17), total CPA up about 9%. The TikTok
+  gap is a data signal, not a cause.

@@ -1,0 +1,20 @@
+{% extends "web/base.html" %}
+{% block title %}Sign in, Signal Desk{% endblock %}
+{% block shell %}
+<main id="main" class="mx-auto grid min-h-screen max-w-5xl items-center gap-10 px-4 py-12 sm:px-6 md:grid-cols-[1.1fr_1fr]">
+  <section class="reveal">
+    <p class="text-sm font-semibold text-act">Signal Desk</p>
+    <h1 class="mt-3 text-2xl font-semibold leading-tight tracking-tight sm:text-[2.5rem] sm:leading-[1.1]">Why did CPA move? Checked, measured, then explained.</h1>
+    <p class="mt-4 max-w-prose text-lg text-ink-soft">Google Ads, Meta, Microsoft Ads, TikTok and GA4 in one place. The data is checked before anyone reads it, every cause is measured against its own normal week, and budget changes wait for a manager.</p>
+  </section>
+  <form method="post" class="panel reveal space-y-4">
+    {% csrf_token %}
+    <h2 class="text-xl font-semibold">Sign in</h2>
+    {% if form.errors %}<p class="rounded-ctl bg-worse-wash p-3 text-sm text-worse" role="alert">That username and password do not match. Try again.</p>{% endif %}
+    <label class="block"><span class="text-sm text-ink-soft">Username</span><input class="field mt-1" name="username" autocomplete="username" required autofocus></label>
+    <label class="block"><span class="text-sm text-ink-soft">Password</span><input class="field mt-1" type="password" name="password" autocomplete="current-password" required></label>
+    <button class="btn btn-primary w-full justify-center py-2">Sign in</button>
+    <p class="text-xs text-muted">Demo accounts after <code>manage.py seed_demo</code>: anna (analyst), max (manager), lumen-client (client viewer); password <code>signal-desk-demo</code>.</p>
+  </form>
+</main>
+{% endblock %}

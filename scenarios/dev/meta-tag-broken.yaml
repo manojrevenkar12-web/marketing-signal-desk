@@ -1,0 +1,8 @@
+id: meta-tag-broken
+title: A theme update dropped the Meta landing pages' GA4 tag
+seed: 21
+events:
+  - {type: tracking_loss, channel: meta, start: 2026-09-22, pct: 55}
+expect:
+  causes: [{type: tracking_loss, channel: meta}]
+  signals: [{kind: tracking_gap, channel: meta}]

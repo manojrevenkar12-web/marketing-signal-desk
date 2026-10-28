@@ -1,0 +1,9 @@
+id: bing-bots
+title: Bots click one Microsoft Ads campaign
+seed: 23
+events:
+  - {type: invalid_clicks, channel: microsoft_ads, campaign: "Search - Generic", start: 2026-09-21, clicks_per_day: 260}
+expect:
+  causes: []
+  signals: [{kind: invalid_traffic, channel: microsoft_ads}]
+note: Microsoft Ads is a small channel, so total CPA barely moves. The waste must still be flagged as a data problem.

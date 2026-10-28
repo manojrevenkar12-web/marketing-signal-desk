@@ -1,0 +1,16 @@
+{% extends "web/base.html" %}
+{% block title %}Workspaces, Signal Desk{% endblock %}
+{% block shell %}
+<main id="main" class="mx-auto max-w-3xl px-4 py-12 sm:px-6">
+  <h1 class="text-2xl font-semibold tracking-tight">Your workspaces</h1>
+  {% if memberships %}
+  <ul class="mt-6 divide-y divide-line rounded-panel bg-panel shadow-panel">
+    {% for m in memberships %}
+    <li><a class="flex items-center justify-between gap-4 px-5 py-4 hover:bg-sunk" href="{% url 'overview' m.workspace.slug %}"><span><span class="font-semibold">{{ m.workspace.name }}</span> <span class="text-sm text-muted">{{ m.workspace.agency.name }}</span></span><span class="text-sm text-ink-soft">{{ m.get_role_display }}</span></a></li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="mt-6">{% include "web/components/states.html#empty" with title="No workspaces yet" body="Ask your agency's admin to add you to a client workspace." %}</div>
+  {% endif %}
+</main>
+{% endblock %}

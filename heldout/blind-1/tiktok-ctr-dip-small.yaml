@@ -1,0 +1,13 @@
+id: tiktok-ctr-dip-small
+title: TikTok Spark Ads click-through falls 30%, too small to matter
+seed: 4110
+question: "Why did our CPA change last week?"
+events:
+  - {type: ctr_drop, channel: tiktok, campaign: "Spark Ads - Creators", start: 2026-09-21, pct: 30}
+expect:
+  metric: cpa
+  causes: []
+  signals: []
+note: >
+  TikTok has about 7.5 purchases a day; losing 30% is about 2 of 262, total CPA up under 1%.
+  Real but immaterial; no cause expected.

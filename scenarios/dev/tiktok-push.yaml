@@ -1,0 +1,8 @@
+id: tiktok-push
+title: Budget moved from Google Shopping to TikTok
+seed: 25
+events:
+  - {type: budget_shift, channel: google_ads, to_channel: tiktok, start: 2026-09-21, eur_per_day: 900}
+expect:
+  causes: [{type: budget_mix_shift, channel: tiktok}]
+  signals: []

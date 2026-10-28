@@ -1,0 +1,9 @@
+id: two-problems
+title: Google CPMs up and bots on TikTok in the same week
+seed: 30
+events:
+  - {type: cpm_spike, channel: google_ads, start: 2026-09-21, pct: 30}
+  - {type: invalid_clicks, channel: tiktok, campaign: "Spark Ads - Creators", start: 2026-09-21, clicks_per_day: 900}
+expect:
+  causes: [{type: auction_pressure, channel: google_ads}, {type: invalid_traffic, channel: tiktok}]
+  signals: [{kind: invalid_traffic, channel: tiktok}]

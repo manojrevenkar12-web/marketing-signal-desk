@@ -1,0 +1,13 @@
+id: platform-question-meta-overreport
+title: Platform-reported CPA improves only because Meta claims 60% more
+seed: 4125
+question: "Why did our CPA in the platforms go down last week?"
+events:
+  - {type: overreport, channel: meta, start: 2026-09-21, pct: 60}
+expect:
+  metric: cpa
+  causes: [{type: platform_overreporting, channel: meta}]
+  signals: [{type: overreporting, channel: meta}]
+note: >
+  The question asks for the platforms' own numbers. Meta's claimed purchases rise by about 47 a day
+  on a platform total of about 310, so platform CPA falls about 13% while GA4 and real sales are flat.

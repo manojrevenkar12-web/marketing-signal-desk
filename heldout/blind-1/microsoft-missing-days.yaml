@@ -1,0 +1,13 @@
+id: microsoft-missing-days
+title: Microsoft Ads API returned nothing for two days
+seed: 4113
+question: "Why did our CPA change last week?"
+events:
+  - {type: missing_days, channel: microsoft_ads, dates: [2026-09-23, 2026-09-24]}
+expect:
+  metric: cpa
+  causes: []
+  signals: [{type: missing_days, channel: microsoft_ads}]
+note: >
+  Measurement only: nothing real changed. The two empty days must be flagged and not read as a
+  spend cut or a performance change.

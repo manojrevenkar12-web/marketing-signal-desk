@@ -1,0 +1,6 @@
+{% extends "web/layout.html" %}
+{% block title %}Question, {{ ws.name }}{% endblock %}
+{% block main %}
+<a href="{% url 'ask' ws.slug %}" class="text-sm text-act">Back to questions</a>
+<div class="mt-4">{% include "web/ask.html#question" %}</div>
+{% endblock %}

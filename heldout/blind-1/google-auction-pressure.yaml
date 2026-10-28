@@ -1,0 +1,13 @@
+id: google-auction-pressure
+title: Google Ads auction prices jump 40% across all campaigns
+seed: 4101
+question: "Why did our CPA go up last week?"
+events:
+  - {type: cpm_spike, channel: google_ads, start: 2026-09-21, pct: 40}
+expect:
+  metric: cpa
+  causes: [{type: auction_pressure, channel: google_ads}]
+  signals: []
+note: >
+  Google carries about 176 of 262 GA4 purchases. With budgets fixed, a 40% CPM rise cuts Google
+  purchases to about 126, total CPA up about 24%. One clear cause on the biggest channel.

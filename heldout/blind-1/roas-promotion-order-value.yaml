@@ -1,0 +1,12 @@
+id: roas-promotion-order-value
+title: A 20%-off promotion lowers order value and ROAS
+seed: 4108
+question: "Why did our ROAS drop last week?"
+events:
+  - {type: aov_drop, start: 2026-09-21, pct: 20}
+expect:
+  metric: roas
+  causes: [{type: order_value_drop}]
+  signals: []
+note: >
+  Purchases and spend are unchanged; revenue per order falls 20%, so ROAS falls about 20%.

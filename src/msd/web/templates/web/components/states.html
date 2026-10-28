@@ -1,0 +1,13 @@
+{% comment %}Loading, empty and error states shared by every screen.{% endcomment %}
+{% partialdef skeleton %}
+<div class="space-y-3 py-2" role="status" aria-live="polite">
+  <span class="sr-only">{{ label|default:"Loading" }}</span>
+  <span class="skeleton-line w-3/4"></span><span class="skeleton-line w-11/12"></span><span class="skeleton-line w-2/3"></span><span class="skeleton-line w-5/6"></span>
+</div>
+{% endpartialdef %}
+{% partialdef empty %}
+<div class="rounded-panel border border-dashed border-line p-6">
+  <p class="font-semibold">{{ title }}</p>
+  {% if body %}<p class="mt-1 max-w-prose text-ink-soft">{{ body }}</p>{% endif %}
+</div>
+{% endpartialdef %}

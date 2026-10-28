@@ -1,0 +1,30 @@
+{% extends "web/base.html" %}
+{% block shell %}
+<header class="border-b border-line bg-panel">
+  <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-4 gap-y-3 px-4 py-3 sm:px-6">
+    <a href="{% url 'home' %}" class="text-lg font-semibold tracking-tight text-ink">Signal Desk</a>
+    <div x-data="disclosure" class="relative" @keydown.escape="close">
+      <button type="button" class="btn" @click="toggle" aria-haspopup="true" :aria-expanded="open">{{ ws.name }}<span class="text-muted">{{ member.get_role_display }}</span></button>
+      <ul x-show="open" x-transition @click.outside="close" class="absolute left-0 top-full z-10 mt-1 w-64 rounded-panel border border-line bg-panel p-1 shadow-panel" role="menu">
+        {% for m in workspaces %}
+        <li role="none"><a role="menuitem" href="{% url 'overview' m.workspace.slug %}" class="block rounded-ctl px-3 py-2 text-sm hover:bg-sunk {% if m.workspace.pk == ws.pk %}font-semibold{% endif %}">{{ m.workspace.name }} <span class="text-muted">{{ m.get_role_display }}</span></a></li>
+        {% endfor %}
+      </ul>
+    </div>
+    <nav aria-label="Sections" class="order-last flex w-full flex-wrap gap-1 sm:order-none sm:w-auto">
+      {% for key, label in nav %}
+      {% url key ws.slug as href %}
+      <a href="{{ href }}" class="rounded-ctl px-3 py-1.5 text-sm {% if section == key %}bg-sunk font-semibold text-ink{% else %}text-ink-soft hover:bg-sunk{% endif %}" {% if section == key %}aria-current="page"{% endif %}>{{ label }}</a>
+      {% endfor %}
+    </nav>
+    <div class="ml-auto flex items-center gap-2">
+      <span class="hidden text-sm text-muted 2xl:inline">{{ request.user.get_full_name|default:request.user.username }}</span>
+      <button type="button" x-data="theme" class="btn" @click="cycle" x-text="label">Theme</button>
+      <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="btn">Sign out</button></form>
+    </div>
+  </div>
+</header>
+<main id="main" class="mx-auto max-w-6xl px-4 py-8 sm:px-6" tabindex="-1">
+  {% block main %}{% endblock %}
+</main>
+{% endblock %}

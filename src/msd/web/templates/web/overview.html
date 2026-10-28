@@ -1,0 +1,76 @@
+{% extends "web/layout.html" %}
+{% load msd_ui %}
+{% block title %}{{ ws.name }}, Signal Desk{% endblock %}
+{% block main %}
+<div class="flex flex-wrap items-end justify-between gap-3">
+  <div>
+    <h1 class="text-2xl font-semibold tracking-tight">{{ ws.name }}</h1>
+    <p class="mt-1 text-ink-soft">Last week against the four weeks before, measured in GA4.</p>
+  </div>
+  {% if has_data %}<button class="btn" hx-get="{% url 'overview_diagnosis' ws.slug %}?refresh=1" hx-target="#diagnosis" hx-indicator="#diagnosis-loading">Recalculate</button>{% endif %}
+</div>
+{% if has_data %}
+<div id="diagnosis-loading" class="htmx-indicator panel mt-6">{% include "web/components/states.html#skeleton" with label="Recalculating" %}</div>
+<div id="diagnosis" class="mt-6" hx-get="{% url 'overview_diagnosis' ws.slug %}" hx-trigger="load" hx-swap="innerHTML">
+  <div class="panel">{% include "web/components/states.html#skeleton" with label="Reading the week" %}</div>
+</div>
+{% else %}
+<div class="mt-6">{% include "web/components/states.html#empty" with title="No data yet" body="Connect Google Ads, Meta, Microsoft Ads, TikTok or GA4 and run a first sync. The overview appears as soon as there is a week to compare." %}
+<a class="btn btn-primary mt-4" href="{% url 'connections' ws.slug %}">Open connections</a></div>
+{% endif %}
+{% endblock %}
+
+{% partialdef diagnosis %}{% load msd_ui %}
+<div class="reveal grid gap-6 lg:grid-cols-[3fr_2fr]">
+  <section class="panel" aria-labelledby="bridge-title">
+    <h2 id="bridge-title" class="sr-only">KPI bridge</h2>
+    <p class="text-sm text-muted">CPA, {{ r.periods.current.start }} to {{ r.periods.current.end }}</p>
+    <p class="mt-1 flex flex-wrap items-baseline gap-x-3"><span class="text-2xl font-semibold">{{ r.kpi.current|floatformat:2 }} {{ ws.currency }}</span>
+      <span class="{% if r.kpi.change > 0 %}text-worse{% else %}text-better{% endif %} font-semibold">{{ r.kpi.change_pct|floatformat:1 }}%</span>
+      <span class="text-sm text-muted">from {{ r.kpi.baseline|floatformat:2 }}</span></p>
+    <div class="mt-6">{% if chart %}{% include "web/components/bridge.html#chart" %}{% endif %}</div>
+  </section>
+  <section class="panel" aria-labelledby="causes-title">
+    <h2 id="causes-title" class="font-semibold">What moved it</h2>
+    {% if causes %}
+    <ol class="mt-3 space-y-3">
+      {% for c in causes %}
+      <li class="rounded-ctl border-l-4 {% if c.measurement %}border-measure bg-measure-wash{% else %}border-worse bg-worse-wash{% endif %} px-3 py-2">
+        <p class="font-semibold">{{ c.where }}</p>
+        <p class="text-sm text-ink-soft">{{ c.text|capfirst }}{% if c.share_of_change_pct != None %}: {{ c.share_of_change_pct|floatformat:1 }}% of the change{% endif %}.</p>
+      </li>
+      {% endfor %}
+    </ol>
+    {% elif r.material %}
+    <p class="mt-3 text-ink-soft">The KPI moved, but no single driver stands out from its normal week-to-week movement.</p>
+    {% else %}
+    <p class="mt-3 text-ink-soft">No material change: {{ r.kpi.change_pct|floatformat:1 }}% is inside normal week-to-week movement.</p>
+    {% endif %}
+    {% if r.signals %}
+    <h3 class="mt-6 font-semibold">Data checks</h3>
+    <ul class="mt-2 space-y-2">
+      {% for s in r.signals %}<li class="rounded-ctl bg-measure-wash px-3 py-2 text-sm"><span class="font-semibold text-measure">{{ s.kind|kind_label }}</span> {{ s.summary }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+    <a class="btn btn-primary mt-6" href="{% url 'ask' ws.slug %}">Ask about it</a>
+  </section>
+  <section class="panel lg:col-span-2" aria-labelledby="channels-title">
+    <h2 id="channels-title" class="font-semibold">Channels</h2>
+    <div class="mt-3 overflow-x-auto">
+      <table class="w-full min-w-[34rem] text-sm">
+        <thead class="text-left text-muted"><tr><th class="py-2 font-medium">Channel</th><th class="py-2 text-right font-medium">Spend this week</th><th class="py-2 text-right font-medium">CPA before</th><th class="py-2 text-right font-medium">CPA now</th><th class="py-2 text-right font-medium">Change</th></tr></thead>
+        <tbody class="divide-y divide-line">
+          {% for c in channels %}
+          <tr><td class="py-2 font-medium">{{ c.channel }}</td><td class="py-2 text-right">{{ c.spend|floatformat:"0g" }}</td><td class="py-2 text-right">{{ c.before|floatformat:2 }}</td><td class="py-2 text-right">{{ c.now|floatformat:2 }}</td>
+          <td class="py-2 text-right {% if c.change > 0 %}text-worse{% else %}text-better{% endif %}">{% if c.change != None %}{{ c.change|floatformat:1 }}%{% else %}n/a{% endif %}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+{% endpartialdef %}
+
+{% partialdef diagnosis_empty %}{% load msd_ui %}
+{% include "web/components/states.html#empty" with title="Not enough data for a comparison" body=message %}
+{% endpartialdef %}

@@ -1,0 +1,14 @@
+id: budget-shift-google-to-tiktok
+title: 600 EUR a day moved from Google Ads to TikTok
+seed: 4123
+question: "Why did our CPA go up last week?"
+events:
+  - {type: budget_shift, channel: google_ads, to_channel: tiktok, start: 2026-09-21, eur_per_day: 600}
+expect:
+  metric: cpa
+  causes: [{type: budget_mix_shift, channel: tiktok}]
+  signals: []
+note: >
+  Every campaign keeps its own CPA, but money moved from Google (CPA about 14) to TikTok (about 80).
+  Google loses about 45 purchases, TikTok gains about 7.5: total CPA up about 19%. Looks like worse
+  performance; it is the mix.

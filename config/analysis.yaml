@@ -1,0 +1,29 @@
+# Thresholds for the diagnosis. Tuned on scenarios/dev only; the held-out scenarios never touch them.
+periods:
+  default_current_days: 7
+  default_baseline_days: 28
+  noise_block_days: 7          # history before the current period is cut into blocks this long to measure week-to-week noise
+  min_noise_sd: 0.01           # never assume a driver moves less than 1% from week to week
+materiality:
+  min_change_pct: 5.0          # a KPI move smaller than this is "no material change"
+  min_share_of_change: 0.15    # a driver must explain at least this share of the move to be named
+  min_driver_effect_pct: 4.0   # ... and move the KPI by at least this much of its baseline on its own
+  min_noise_z: 2.5             # ... and its change must be this many week-to-week deviations away
+  max_causes: 3
+  sitewide_min_move_pct: 10.0  # a channel counts towards a site-wide move when its rate moved this much
+signals:
+  tracking_gap:
+    min_drop_pct: 20.0         # GA4/platform conversion ratio falls by at least this much
+    max_platform_cvr_change_pct: 15.0
+    sitewide_channels: 3       # this many channels at once = a site-wide tag problem
+  overreporting:
+    min_rise_pct: 20.0
+    max_ga4_cvr_change_pct: 15.0
+  invalid_traffic:
+    min_ctr_ratio: 1.25
+    max_converting_share_of_extra_clicks: 0.5   # extra clicks that convert at the old rate, at most
+    min_click_ratio: 1.2
+  missing_days:
+    min_days: 1
+drilldown:
+  campaign_share: 0.6          # name a campaign when it carries this share of its channel's effect

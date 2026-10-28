@@ -1,0 +1,9 @@
+id: meta-attribution-change
+title: Meta switched the attribution setting; GA4 sees no change
+seed: 28
+events:
+  - {type: overreport, channel: meta, start: 2026-09-21, pct: 40}
+expect:
+  causes: []
+  signals: [{kind: overreporting, channel: meta}]
+note: In the GA4 view nothing changed. The overreporting signal should still be raised.

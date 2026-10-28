@@ -1,0 +1,8 @@
+id: generic-landing-page
+title: Generic search traffic lands on a slow page
+seed: 27
+events:
+  - {type: cvr_drop, channel: google_ads, campaign: "Search - Generic", start: 2026-09-21, pct: 60}
+expect:
+  causes: [{type: conversion_drop, channel: google_ads, campaign: "Search - Generic"}]
+  signals: []

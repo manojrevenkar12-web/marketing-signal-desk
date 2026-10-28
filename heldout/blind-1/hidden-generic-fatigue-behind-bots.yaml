@@ -1,0 +1,17 @@
+id: hidden-generic-fatigue-behind-bots
+title: Bot clicks hide a CTR collapse on Google generic search
+seed: 4124
+question: "Why did our CPA go up last week?"
+events:
+  - {type: ctr_drop, channel: google_ads, campaign: "Search - Generic", start: 2026-09-21, pct: 55}
+  - {type: invalid_clicks, channel: google_ads, campaign: "Search - Generic", start: 2026-09-21, clicks_per_day: 1000}
+expect:
+  metric: cpa
+  causes:
+    - {type: creative_fatigue, channel: google_ads, campaign: "Search - Generic"}
+    - {type: invalid_traffic, channel: google_ads, campaign: "Search - Generic"}
+  signals: [{type: invalid_traffic, channel: google_ads}]
+note: >
+  Real clicks fall to about 790 a day but 1,000 bot clicks bring the total back to about the normal
+  1,750, so campaign CTR looks flat. Alone, the CTR drop lifts total CPA about 12%; the bots about
+  8-10%. Both must be found even though the click count looks normal.

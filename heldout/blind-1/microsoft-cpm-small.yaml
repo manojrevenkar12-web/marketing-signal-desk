@@ -1,0 +1,13 @@
+id: microsoft-cpm-small
+title: Microsoft Ads CPM up 30% on a small channel
+seed: 4111
+question: "Why did our CPA change last week?"
+events:
+  - {type: cpm_spike, channel: microsoft_ads, start: 2026-09-21, pct: 30}
+expect:
+  metric: cpa
+  causes: []
+  signals: []
+note: >
+  Microsoft has about 21 purchases a day; a 30% CPM rise loses about 5, total CPA up about 2%.
+  Clearly below the 5% line.

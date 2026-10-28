@@ -1,0 +1,23 @@
+{
+ "by_scenario": {
+  "bing-bots": "9/10",
+  "bing-export-gap": "10/10",
+  "checkout-bug": "9/10",
+  "consent-banner": "9/10",
+  "generic-landing-page": "10/10",
+  "meta-attribution-change": "10/10",
+  "meta-auction-pressure": "9/10",
+  "meta-tag-broken": "10/10",
+  "promo-week": "10/10",
+  "prospecting-fatigue": "9/10",
+  "steady-state": "10/10",
+  "tiktok-push": "10/10",
+  "two-problems": "10/10"
+ },
+ "summary": {
+  "fully_right": 125,
+  "rate": 0.962,
+  "runs": 130,
+  "seeds": 10
+ }
+}

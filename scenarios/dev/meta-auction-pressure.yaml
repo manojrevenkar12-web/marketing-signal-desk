@@ -1,0 +1,8 @@
+id: meta-auction-pressure
+title: Meta auctions got expensive
+seed: 11
+events:
+  - {type: cpm_spike, channel: meta, start: 2026-09-21, pct: 45}
+expect:
+  causes: [{type: auction_pressure, channel: meta}]
+  signals: []

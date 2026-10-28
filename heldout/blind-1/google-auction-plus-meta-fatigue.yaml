@@ -1,0 +1,16 @@
+id: google-auction-plus-meta-fatigue
+title: Google CPMs up 30% and Meta creatives fatigue in the same week
+seed: 4117
+question: "Why did our CPA go up last week?"
+events:
+  - {type: cpm_spike, channel: google_ads, start: 2026-09-21, pct: 30}
+  - {type: ctr_drop, channel: meta, start: 2026-09-21, pct: 50}
+expect:
+  metric: cpa
+  causes:
+    - {type: auction_pressure, channel: google_ads}
+    - {type: creative_fatigue, channel: meta}
+  signals: []
+note: >
+  On its own the Google CPM rise lifts CPA about 18%; the Meta CTR halving (both campaigns) about 12%.
+  Both material, Google first.

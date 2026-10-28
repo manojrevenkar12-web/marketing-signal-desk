@@ -1,0 +1,64 @@
+name: ci
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://msd:msd@127.0.0.1:5432/msd
+      MSD_WRITER: sim
+    steps:
+      - uses: actions/checkout@v4
+      - name: An ordinary database role (no superuser, no BYPASSRLS), as in production
+        run: |
+          PGPASSWORD=postgres psql -h 127.0.0.1 -U postgres -c "CREATE ROLE msd LOGIN PASSWORD 'msd' CREATEDB NOSUPERUSER NOBYPASSRLS"
+          PGPASSWORD=postgres psql -h 127.0.0.1 -U postgres -c "CREATE DATABASE msd OWNER msd"
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13", cache: pip }
+      - uses: actions/setup-node@v4
+        with: { node-version: "22", cache: npm, cache-dependency-path: frontend/package-lock.json }
+      - run: pip install -c constraints.txt -e ".[dev]"
+      - name: Front-end assets are current
+        run: cd frontend && npm ci && npm run build && cd .. && git diff --exit-code src/msd/web/static
+      - run: ruff check src tests && ruff format --check src tests
+      - run: mypy
+      - run: python manage.py makemigrations --check --dry-run
+      - run: python manage.py migrate
+      - run: python -m playwright install --with-deps chromium
+      - name: Tests (unit, PostgreSQL row-level security, web, Playwright)
+        run: pytest -q
+      - name: Evaluation (end to end) and robustness
+        run: python manage.py evals all
+      - name: Reports are reproducible
+        run: git diff --exit-code reports/evals
+
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t signal-desk:ci .
+
+  terraform:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infra/gcp
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - run: terraform init -backend=false
+      - run: terraform validate

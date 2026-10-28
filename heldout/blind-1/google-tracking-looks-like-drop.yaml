@@ -1,0 +1,13 @@
+id: google-tracking-looks-like-drop
+title: GA4 loses 30% of Google-attributed purchases after a tag change
+seed: 4121
+question: "Why did our CPA go up last week?"
+events:
+  - {type: tracking_loss, channel: google_ads, start: 2026-09-21, pct: 30}
+expect:
+  metric: cpa
+  causes: [{type: tracking_loss, channel: google_ads}]
+  signals: [{type: tracking_gap, channel: google_ads}]
+note: >
+  GA4 CPA rises about 25% and looks like a Google conversion drop, but Google Ads' own conversions,
+  clicks and CTR hold. The answer must be tracking, not performance.

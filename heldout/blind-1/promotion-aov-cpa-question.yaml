@@ -1,0 +1,13 @@
+id: promotion-aov-cpa-question
+title: A promotion cuts order value 25% but the question is about CPA
+seed: 4114
+question: "Why did our CPA change last week?"
+events:
+  - {type: aov_drop, start: 2026-09-21, pct: 25}
+expect:
+  metric: cpa
+  causes: []
+  signals: []
+note: >
+  Order value does not enter CPA: spend and purchases are unchanged, so CPA is flat. ROAS would drop,
+  but it was not asked about; order_value_drop is only a cause for ROAS questions.

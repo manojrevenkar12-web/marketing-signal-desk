@@ -1,0 +1,20 @@
+# What the desk proposes for each cause. Proposals are never applied by the system: a manager
+# approves or rejects them, and approved changes are exported for the ad platform.
+guardrails:
+  max_budget_cut_pct: 30        # of a channel's daily spend, in one proposal
+  max_budget_raise_pct: 20
+  min_daily_budget: 50
+actions:
+  auction_pressure: {title: "Hold bids on {channel}; move part of its budget to the channel with the best CPA", budget: shift_out, pct: 15}
+  creative_fatigue: {title: "Refresh the creatives in {target}", budget: none}
+  conversion_drop: {title: "Check the landing page and offer for {target}", budget: none}
+  site_conversion_drop: {title: "Check the site and checkout before touching any budget", budget: none}
+  order_value_drop: {title: "Review the promotion's effect on order value; budgets unchanged", budget: none}
+  tracking_loss: {title: "Fix GA4 tracking for {target}; keep its budget", budget: hold}
+  invalid_traffic: {title: "Exclude the invalid traffic on {target} and claim the invalid-click credit", budget: cut_waste}
+  budget_mix_shift: {title: "Review the budget moved to {channel}; it converts worse than where it came from", budget: revert_mix, pct: 50}
+  platform_overreporting: {title: "Read {channel}'s conversions against GA4; its attribution changed", budget: none}
+# The rule a team without data checks would apply, used in the evals as the baseline to beat.
+naive_rule:
+  cut_when_channel_cpa_up_pct: 20
+  cut_pct: 25

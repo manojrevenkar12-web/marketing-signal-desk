@@ -1,0 +1,10 @@
+id: noise-only
+title: An ordinary week with only day-to-day noise
+seed: 4109
+question: "Why did our CPA change last week?"
+events: []
+expect:
+  metric: cpa
+  causes: []
+  signals: []
+note: Nothing happened. The tool should not invent a cause from normal wobble or small-channel counting noise.

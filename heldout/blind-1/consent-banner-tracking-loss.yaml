@@ -1,0 +1,14 @@
+id: consent-banner-tracking-loss
+title: New consent banner makes GA4 miss 20% of purchases on every channel
+seed: 4107
+question: "Why did our CPA go up last week?"
+events:
+  - {type: tracking_loss, start: 2026-09-22, pct: 20}
+expect:
+  metric: cpa
+  causes: [{type: tracking_loss}]
+  signals: [{type: tracking_gap}]
+note: >
+  Real purchases and the platforms' own numbers hold; only GA4 records fewer (about 17% fewer over
+  the week). GA4 CPA up about 20%. Must be called tracking, across all channels, not a site
+  conversion drop.

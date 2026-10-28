@@ -1,0 +1,38 @@
+{% comment %}
+The KPI bridge: from the baseline value, each driver's share of the change (Shapley), to the current
+value. Colour says what the share does to the KPI; amber marks a data problem, not performance.
+Bars are drawn with SVG geometry (no inline styles, so the CSP holds) and grow in left to right.
+{% endcomment %}
+{% partialdef chart %}
+<figure class="min-w-0">
+  <figcaption class="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+    <span class="font-semibold">How {{ chart.metric }} got from before to now</span>
+    <span class="flex flex-wrap gap-3 text-xs text-muted">
+      <span class="inline-flex items-center gap-1"><svg width="10" height="10" aria-hidden="true"><rect width="10" height="10" rx="2" class="fill-worse"/></svg>made it worse</span>
+      <span class="inline-flex items-center gap-1"><svg width="10" height="10" aria-hidden="true"><rect width="10" height="10" rx="2" class="fill-better"/></svg>made it better</span>
+      <span class="inline-flex items-center gap-1"><svg width="10" height="10" aria-hidden="true"><rect width="10" height="10" rx="2" class="fill-measure"/></svg>data problem</span>
+    </span>
+  </figcaption>
+  <div class="flex items-start gap-3">
+    <ol class="w-28 shrink-0 sm:w-48" aria-label="Drivers">
+      {% for l in chart.labels %}
+      <li class="flex h-10 min-w-0 flex-col justify-center">
+        <span class="truncate text-sm {% if l.tone == 'start' or l.tone == 'end' %}font-semibold{% endif %}">{{ l.label }}</span>
+        {% if l.note %}<span class="truncate text-xs text-muted">{{ l.note }}</span>{% endif %}
+      </li>
+      {% endfor %}
+    </ol>
+    <svg class="block min-w-0 flex-1" width="100%" height="{{ chart.height }}" viewBox="0 0 {{ chart.width }} {{ chart.height }}" preserveAspectRatio="none" aria-hidden="true">
+      {% for b in chart.bars %}
+      <rect x="{{ b.x|floatformat:'2u' }}" y="{{ b.y }}" width="{{ b.width|floatformat:'2u' }}" height="{{ chart.bar_h }}" rx="3"
+        class="bridge-bar delay-step-{{ b.step }} {% if b.negative %}bridge-bar-neg{% endif %} {% if b.tone == 'start' or b.tone == 'end' %}fill-ink-soft{% elif b.tone == 'measure' %}fill-measure{% elif b.tone == 'worse' %}fill-worse{% else %}fill-better{% endif %}"><title>{{ b.label }}: {{ b.value|floatformat:2 }}</title></rect>
+      {% endfor %}
+    </svg>
+    <ol class="shrink-0" aria-label="Values">
+      {% for l in chart.labels %}
+      <li class="h-10 text-right text-sm leading-10 {% if l.tone == 'worse' %}text-worse{% elif l.tone == 'better' %}text-better{% elif l.tone == 'measure' %}text-measure{% else %}font-semibold{% endif %}">{{ l.value }}</li>
+      {% endfor %}
+    </ol>
+  </div>
+</figure>
+{% endpartialdef %}

@@ -1,0 +1,37 @@
+# The simulated advertiser used in tests, evals and the demo. Only src/msd/sim and src/msd/evals read
+# this file: the connectors see API responses, the analysis sees normalised rows.
+currency: EUR
+aov_eur: 68.0          # average order value
+aov_sd: 0.35           # lognormal sigma per order
+weekday_factor: [1.0, 1.02, 1.03, 1.0, 0.97, 0.92, 0.95]   # Mon..Sun spend
+ga4_capture: 0.92      # share of true conversions GA4 records (consent, ad blockers)
+channels:
+  google_ads:
+    platform_overreport: 1.05
+    ga4_source_medium: google / cpc
+    campaigns:
+      - {id: "21001", name: "Search - Brand", budget: 300, cpm: 25.0, ctr: 0.080, cvr: 0.090}
+      - {id: "21002", name: "Search - Generic", budget: 900, cpm: 18.0, ctr: 0.035, cvr: 0.032}
+      - {id: "21003", name: "PMax - Shopping", budget: 1200, cpm: 9.0, ctr: 0.014, cvr: 0.026}
+  meta:
+    platform_overreport: 1.25
+    ga4_source_medium: facebook / paid
+    campaigns:
+      - {id: "23850001", name: "Prospecting - Advantage+", budget: 1500, cpm: 8.0, ctr: 0.011, cvr: 0.018}
+      - {id: "23850002", name: "Retargeting - DPA", budget: 500, cpm: 14.0, ctr: 0.016, cvr: 0.045}
+  microsoft_ads:
+    platform_overreport: 1.00
+    ga4_source_medium: bing / cpc
+    campaigns:
+      - {id: "5501", name: "Search - Generic", budget: 350, cpm: 14.0, ctr: 0.030, cvr: 0.030}
+  tiktok:
+    platform_overreport: 1.30
+    ga4_source_medium: tiktok / paid
+    campaigns:
+      - {id: "1790001", name: "Spark Ads - Creators", budget: 600, cpm: 6.0, ctr: 0.009, cvr: 0.009}
+noise:
+  spend_sd: 0.06       # daily budget delivery noise
+  rate_sd: 0.05        # day-to-day wobble of CPM, CTR and CVR
+organic_ga4_rows:      # non-paid traffic GA4 also reports (the connector must not count it)
+  - {source_medium: "(direct) / (none)", conversions_per_day: 40}
+  - {source_medium: "google / organic", conversions_per_day: 55}

@@ -1,0 +1,16 @@
+id: google-and-meta-conversion-drop
+title: Separate landing-page problems hit Google and Meta traffic
+seed: 4120
+question: "Why did our CPA go up last week?"
+events:
+  - {type: cvr_drop, channel: google_ads, start: 2026-09-21, pct: 30}
+  - {type: cvr_drop, channel: meta, start: 2026-09-22, pct: 40}
+expect:
+  metric: cpa
+  causes:
+    - {type: conversion_drop, channel: google_ads}
+    - {type: conversion_drop, channel: meta}
+  signals: []
+note: >
+  Google alone lifts CPA about 25%, Meta alone (six of seven days) about 8%. Only two channels move,
+  so these are two channel conversion drops, not a site-wide one; Microsoft and TikTok are normal.
